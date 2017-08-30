@@ -5,17 +5,12 @@ This is a simple java project to deomnstrate the uses of various web technologie
 ##Dependencies:
 + jstl-1.2.jar
 + mysql-connector-java.jar
-+ Any server (I used glassfish 4.1)
++ Any server (I used Tomcat 8.0)
 
 ##To do:
-+ Move logo.png to images
-+ Move small-logo.png to images
-+ ~~create another repo for the web crawler (back-end)~~
 
-Crawler Backend **<a href="https://github.com/pavitrakumar78/Java-Web-Crawler">repo</a> **
++ Add Search file (.jsp) Update history file (jQuery) 
++ create another repo for the web crawler (back-end)
 
-###Sources:
-+ http://www.javatpoint.com
-+ http://www.w3schools.com
-+ http://www.google.com
-+ http://www.queness.com
+Crawler Backend **<a href="https://github.com/praveenksuja/Java-Web-Crawler-Backend.git">repo</a> **
+
