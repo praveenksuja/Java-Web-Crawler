@@ -12,5 +12,5 @@ This is a simple java project to deomnstrate the uses of various web technologie
 + Add Search file (.jsp) Update history file (jQuery) 
 + create another repo for the web crawler (back-end)
 
-Crawler Backend **<a href="https://github.com/praveenksuja/Java-Web-Crawler-Backend.git">repo</a> **
+Crawler Backend **<a href="https://github.com/praveenksuja/Java-Web-Crawler-Backend.git">Backend Repo</a> **
 
