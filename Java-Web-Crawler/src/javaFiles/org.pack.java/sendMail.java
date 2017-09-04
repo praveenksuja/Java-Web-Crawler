@@ -77,8 +77,35 @@ public class sendMail extends HttpServlet {
 
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+   
+        response.sendRedirect("aboutPageAJ.html#page5");
+        String host = "smtp.gmail.com";
+        String port = "587";
+        String mailFrom = "praveenkt@gmail.com";
+        String password = "pjpj";
+
+        // outgoing message information
+        String mailTo = "praveenkt@gmail.com";
+        String subject = "Mail From:"+request.getParameter("email_name")+";Email: "+request.getParameter("email");
+
+        // message contains HTML markups
+        String message = request.getParameter("email_message");
+
+       
+
+        try {
+            sendHtmlEmail(host, port, mailFrom, password, mailTo,
+                    subject, message);
+            System.out.println("Email sent.");
+        } catch (Exception ex) {
+            System.out.println("Failed to sent email.");
+            ex.printStackTrace();
+        }
+        request.getSession().setAttribute("email_message","EMAIL SEND!!");
     }
-     
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
