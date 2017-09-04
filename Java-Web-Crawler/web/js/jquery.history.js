@@ -47,6 +47,91 @@ $.extend(History.prototype, {
 	},
 	
 });
+_check: function() {
+	if($.browser.msie) {
+		// On IE, check for location.hash of iframe
+		var ihistory = $("#jQuery_history")[0];
+		var iframe = ihistory.contentDocument || ihistory.contentWindow.document;
+		var current_hash = iframe.location.hash;
+		if(current_hash != $.history._curHash) {
+		
+			location.hash = current_hash;
+			$.history._curHash = current_hash;
+			$.history._callback(current_hash.replace(/^#/, ''));
+			
+		}
+	} else if ($.browser.safari) {
+		if (!$.history._dontCheck) {
+			var historyDelta = history.length - $.history._historyBackStack.length;
+			
+			if (historyDelta) { // back or forward button has been pushed
+				$.history._isFirst = false;
+				if (historyDelta < 0) { // back button has been pushed
+					// move items to forward stack
+					for (var i = 0; i < Math.abs(historyDelta); i++) $.history._historyForwardStack.unshift($.history._historyBackStack.pop());
+				} else { // forward button has been pushed
+					// move items to back stack
+					for (var i = 0; i < historyDelta; i++) $.history._historyBackStack.push($.history._historyForwardStack.shift());
+				}
+				var cachedHash = $.history._historyBackStack[$.history._historyBackStack.length - 1];
+				if (cachedHash != undefined) {
+					$.history._curHash = location.hash;
+					$.history._callback(cachedHash);
+				}
+			} else if ($.history._historyBackStack[$.history._historyBackStack.length - 1] == undefined && !$.history._isFirst) {
+				// back button has been pushed to beginning and URL already pointed to hash (e.g. a bookmark)
+				// document.URL doesn't change in Safari
+				if (document.URL.indexOf('#') >= 0) {
+					$.history._callback(document.URL.split('#')[1]);
+				} else {
+					$.history._callback('');
+				}
+				$.history._isFirst = true;
+			}
+		}
+	} else {
+		// otherwise, check for location.hash
+		var current_hash = location.hash;
+		if(current_hash != $.history._curHash) {
+			$.history._curHash = current_hash;
+			$.history._callback(current_hash.replace(/^#/, ''));
+		}
+	}
+},
+
+load: function(hash) {
+	var newhash;
+	
+	if ($.browser.safari) {
+		newhash = hash;
+	} else {
+		newhash = '#' + hash;
+		location.hash = newhash;
+	}
+	this._curHash = newhash;
+	
+	if ($.browser.msie) {
+		var ihistory = $("#jQuery_history")[0]; // TODO: need contentDocument?
+		var iframe = ihistory.contentWindow.document;
+		iframe.open();
+		iframe.close();
+		iframe.location.hash = newhash;
+		this._callback(hash);
+	}
+	else if ($.browser.safari) {
+		this._dontCheck = true;
+		this.add(hash);
+		
+		window.setTimeout(fn, 200);
+		this._callback(hash);
+
+		location.hash = newhash;
+	}
+	else {
+	  this._callback(hash);
+	}
+}
+});
 
 $(document).ready(function() {
 	$.history = new History(); // singleton instance
